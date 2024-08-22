@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEMO GAME PROJECT - RANDOM GUESS</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        p1 {
+            color: red;
+            background-color: blue;
+        }
+        p {
+            text-align: center;
+        }
+        p2 {
+            font-size: 15px;
+            padding: 5px;
+        }
+        #desc {
+            text-align: center;
+            padding: 15px;
+            background: black;
+            color: white;   
+        }
+        #timer {
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            background-color: #fff;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #007bff;
+            z-index: 1000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container text-center mt-2"> 
+        <div class="alert alert-info" role="alert">
+            <b><p style="font-size: 30px;">RANDOM GUESS GAME</p></b>
+        </div>
+        <div id="timer">30</div>
+        <div class="d-flex justify-content-center">
+            <div class="card" style="width: 20rem;">
+                <img src="https://th.bing.com/th/id/OIP.omV4YkKbFAz8F5htAT6AMQHaD2?rs=1&pid=ImgDetMain" class="card-img-top" alt="THE GUESSING GAME">
+                <div class="card-body">                       
+                    <b><p class="card-text" style="font-size: 15px;">IN THIS GAME CHOOSE A RANDOM NUMBER BETWEEN 1 TO 100 AND IF IT IS SAME AS THAT OF NUMBER SELECTED BY COMPUTER, YOU WIN !!</p></b><br>
+                    <u><i><b><p2>REMEMBER YOU HAVE ONLY 30 SECONDS TO GUESS THE CORRECT ANSWER :</b></p2></i></u>
+                    <p1><h6>ENTER A NUMBER BETWEEN 1-100 :</h6></p1>
+                    <input type="number" id="user-input" class="form-control">
+                    <button class="btn btn-success mt-2" onclick="guess_num()">SUBMIT YOUR GUESS</button>
+                </div>
+                <div id="result"></div>
+            </div> 
+        </div>
+    </div>
+
+    <!-- Include the canvas-confetti library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    
+    <script>
+        // Generate a random number between 0 and 100
+        let randomnumber = Math.floor(Math.random() * 101);
+        let timerElement = document.getElementById('timer');
+        let timerValue = 30;
+        let timerInterval;
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timerValue--;
+                timerElement.textContent = timerValue;
+
+                if (timerValue <= 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById('result').textContent = 'TIME IS UP! PLEASE TRY AGAIN.';
+                    document.getElementById('result').className = 'alert alert-danger';
+                    document.querySelector('button').disabled = true; // Disable the button when time is up
+                }
+            }, 1000);
+        }
+
+        function guess_num() {
+            const guess = Number(document.getElementById('user-input').value);
+            const result = document.getElementById('result');
+            
+            if (guess === randomnumber) {
+                result.textContent = 'CONGRATULATIONS !! YOU GOT THE CORRECT NUMBER';
+                result.className = 'alert alert-success';
+                partyPopper();
+                clearInterval(timerInterval); // Stop the timer when the correct number is guessed
+                console.log('CONGRATULATIONS !! YOU GOT THE CORRECT NUMBER');
+            } else if (guess < randomnumber) {
+                console.log("SMALL");
+                alert("TRY ENTERING A BIGGER NUMBER ONCE !!");
+            } else {
+                console.log("LARGE");
+                alert("TRY ENTERING A SMALLER NUMBER ONCE !!");
+            }
+            // console.log(randomnumber); <!-- Uncomment if you want to debug -->
+        } 
+
+        function partyPopper() {
+            window.confetti({
+                particleCount: 200,
+                spread: 90,
+                origin: { y: 0.6 },
+                colors: ['#ff0', '#0f0', '#00f', '#f00', '#0ff'] // Optional: Customize colors
+            });
+        }
+
+        // Start the timer when the page loads
+        startTimer();
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script> 
+    
+    <footer id="desc">
+        <p>&copy; END OF WEBPAGE</p>
+    </footer>
+</body>
+</html>
